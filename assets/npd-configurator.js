@@ -53,6 +53,7 @@ root.addEventListener('click', function (e) {
   if (btn.classList.contains('selected')) {
     btn.classList.remove('selected');
     input.value = "";
+    validateSelections();
     return;
   }
 
@@ -142,18 +143,6 @@ root.querySelectorAll('.npd-carousel').forEach((carousel) => {
   // Run after layout settles (Horizon hydration)
   requestAnimationFrame(updateArrows);
   window.addEventListener("load", updateArrows);
-});
-
-
-  // Recalculate whenever wrapper size changes (mobile/desktop/responsive)
-  const ro = new ResizeObserver(() => apply());
-  ro.observe(wrapper);
-
-  // Also run after images load (sizes can change)
-  window.addEventListener('load', apply);
-
-  // Initial apply (after first paint)
-  requestAnimationFrame(apply);
 });
 
 })();

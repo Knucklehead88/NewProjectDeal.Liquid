@@ -1,66 +1,55 @@
 {% assign categories = shop.metaobjects.configurator_category.values | sort: "sort_order" %}
 {% assign all_options = shop.metaobjects.configurator_option.values %}
 
-
 <div class="npd-layout">
-<div class="npd-left">
-<div class="npd-configurator" data-npd-configurator>
+  <div class="npd-left">
+    <div class="npd-configurator" data-npd-configurator>
+      <h3 class="npd-heading">Customize Your Kitchen</h3>
 
-  <h3 class="npd-heading">Customize Your Kitchen</h3>
+      {% for category in categories %}
+        {% assign category_id = category.system.id | append: '' %}
 
-  {% for category in categories %}
+        <div class="npd-row">
+          <h4 class="npd-title">{{ category.title }}</h4>
 
-    {% assign category_id = category.system.id | append: '' %}
+          <div class="npd-carousel">
+            <button class="npd-nav npd-prev" type="button" aria-label="Previous options">&lsaquo;</button>
 
-    <div class="npd-row">
-      <h4 class="npd-title">{{ category.title }}</h4>
+            <div class="npd-track-wrapper">
+              <div class="npd-track">
+                {% for option in all_options %}
+                  {% assign option_gid = option.category %}
+                  {% assign option_id = option_gid | split: '/' | last %}
 
-      <div class="npd-carousel">
-        <button class="npd-nav npd-prev" type="button">‹</button>
+                  {% if option_id == category_id %}
+                    <div class="npd-slide">
+                      <button
+                        type="button"
+                        class="npd-option"
+                        data-category="{{ category.title | escape }}"
+                        data-value="{{ option.title | escape }}"
+                      >
+                        <img
+                          src="{{ option.image | image_url: width: 260 }}"
+                          alt="{{ option.title | escape }}"
+                          width="260"
+                          height="140"
+                          loading="lazy"
+                        >
+                        <span class="npd-label">{{ option.title }}</span>
+                      </button>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
 
-        <div class="npd-track-wrapper">
-          <div class="npd-track">
-
-            {% for option in all_options %}
-
-              {% assign option_gid = option.category %}
-              {% assign option_id = option_gid | split: '/' | last %}
-
-              {% if option_id == category_id %}
-
-                <div class="npd-slide">
-                  <button
-                    type="button"
-                    class="npd-option"
-                    data-category="{{ category.title | escape }}"
-                    data-value="{{ option.title | escape }}"
-                  >
-                    <img
-                      src="{{ option.image | image_url: width: 260 }}"
-                      alt="{{ option.title | escape }}"
-                      width="260"
-                      height="140"
-                      loading="lazy"
-                    >
-                    <span class="npd-label">{{ option.title }}</span>
-                  </button>
-                </div>
-
-              {% endif %}
-
-            {% endfor %}
-
+            <button class="npd-nav npd-next" type="button" aria-label="Next options">&rsaquo;</button>
           </div>
         </div>
-
-        <button class="npd-nav npd-next" type="button">›</button>
-      </div>
+      {% endfor %}
     </div>
-
-  {% endfor %}
-
-</div>
-</div>
+  </div>
 </div>
 
 {% schema %}
